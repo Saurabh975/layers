@@ -8,7 +8,7 @@ import com.blakrise.layers.reader.ORCReader
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.functions._
 
-import java.io.File
+import java.io.{File, FileNotFoundException}
 import scala.reflect.io.Directory
 
 class FilterPathsBasedOnPredicateTest extends BaseTest {
@@ -18,6 +18,10 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
   override def beforeAll(): Unit = {
     testingDirectory.createDirectory()
     testingPaths(testingDirectory.path, ".orc")
+  }
+
+  override def afterAll(): Unit = {
+    testingDirectory.deleteRecursively()
   }
 
   "filter" should "return list of paths after applying predicates" in {
@@ -48,7 +52,7 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
     assert(filteredPaths.length == 48)
   }
 
-  it should "return list of paths is some partition columns are skipped" in{
+  it should "return list of paths is some partition columns are skipped" in {
     val predicates: Map[Column, List[Predicate]] = Map(
       Column("double_partn_col") -> List(>=(123.0), <=(235.0)),
       Column("float_partn_col") -> List(between(1.0F, 4.0F)),
@@ -82,11 +86,24 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
     assertThrows[PartitionColumnNotPresent](FilterPathsBasedOnPredicate.filter(spark, List(basePath), predicates))
   }
 
-  it should "return list of paths with all in predicates" in {
+  it should "throw error" in {
     val predicates: Map[Column, List[Predicate]] = Map(
       Column("string_partn_col") -> List(equal("val1")),
       Column("double_partn_col") -> List(notEqual(123.5), in(234.6, 345.7)),
       Column("float_partn_col") -> List(in(1.0F, 2.1F, 3.2F)),
+      Column("int_partn_col") -> List(in(234)),
+      Column("long_partn_col") -> List(in(2023110518240000L, 2023110718240000L))
+    )
+
+    assertThrows[FileNotFoundException](
+      FilterPathsBasedOnPredicate.filter(spark, List(new Path("basePath")), predicates))
+  }
+
+  it should "return list of paths with all in predicates" in {
+    val predicates: Map[Column, List[Predicate]] = Map(
+      Column("string_partn_col") -> List(equal("val1")),
+      Column("double_partn_col") -> List(notEqual(123.5), in(234.6, 345.7)),
+      Column("float_partn_col") -> List(in(1.0, 2.1, 3.2)),
       Column("int_partn_col") -> List(in(234)),
       Column("long_partn_col") -> List(in(2023110518240000L, 2023110718240000L))
     )
@@ -97,7 +114,7 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
       .filter(col("string_partn_col") === "val1"
         && col("double_partn_col") =!= 123.5
         && col("double_partn_col").isin(234.6, 345.7)
-        && col("float_partn_col").isin(1.0F, 2.1F, 3.2F)
+        && col("float_partn_col").isin(1.0, 2.1, 3.2)
         && col("int_partn_col").isin(234)
         && col("long_partn_col").isin(2023110518240000L, 2023110718240000L))
 
@@ -107,6 +124,6 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
 
     assert(dataWithBasePath.count() == dataWithFilteredPaths.count())
     assert(dataWithBasePath.columns.sorted sameElements dataWithFilteredPaths.columns.sorted)
-    assert(filteredPaths.length == 80)
+    assert(filteredPaths.length == 24)
   }
 }

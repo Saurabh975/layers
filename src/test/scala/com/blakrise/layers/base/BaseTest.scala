@@ -8,7 +8,7 @@ import java.io.File
 import scala.reflect.io.Directory
 import scala.util.Random
 
-case class TestData(id: Long, data: String)
+case class TestData(id: Int, data: String)
 
 abstract class BaseTest extends AnyFlatSpec with BeforeAndAfterAll {
 
@@ -17,11 +17,6 @@ abstract class BaseTest extends AnyFlatSpec with BeforeAndAfterAll {
   spark.sqlContext.setConf("spark.sql.shuffle.partitions", "1")
 
   protected val dir = new Directory(new File("src/test/resources"))
-
-  override def afterAll(): Unit = {
-    dir.deleteRecursively()
-    spark.stop()
-  }
 
   protected def testingPaths(dirPath: String, fileExtension: String): Unit = {
     // Long Partition
@@ -62,8 +57,8 @@ abstract class BaseTest extends AnyFlatSpec with BeforeAndAfterAll {
 
     //leaf Files
     import spark.implicits._
-    val sampleDataset: Dataset[TestData] = spark.range(Random.between(20, 30))
-      .map(id => TestData(id, s"data$id"))
+    val sampleDataset: Dataset[TestData] = spark.range(30)
+      .map(id => TestData(id.toInt, s"data$id"))
     val dfToWrite = sampleDataset.toDF
     fileExtension match {
       case ".orc" => directories.foreach(directory =>

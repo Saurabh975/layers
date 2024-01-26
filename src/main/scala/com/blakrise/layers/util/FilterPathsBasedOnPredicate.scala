@@ -7,9 +7,11 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileStatus, FileSystem, Path}
 import org.apache.spark.sql.SparkSession
 
+import java.io.FileNotFoundException
 import scala.annotation.tailrec
 
 object FilterPathsBasedOnPredicate {
+
 
   /**
    * Takes List of Paths and return List of Paths  after applying the predicates on it.
@@ -28,7 +30,10 @@ object FilterPathsBasedOnPredicate {
    *                   then the splitOn value is "=". Default value is "="
    * @return List of paths after applying predicates to it
    * @throws PartitionColumnNotPresent with list of Column which were not found
+   * @throws FileNotFoundException if the path provided does not exist
    */
+  @throws[FileNotFoundException]("Path provided does not exist")
+  @throws[PartitionColumnNotPresent]("Partition Provided does not exist")
   def filter(spark: SparkSession, paths: List[Path], predicates: Map[Column, List[Predicate]],
              splitOn: String = "="): List[Path] = {
     filterWithLeafIndicator(spark, paths, predicates, splitOn)
@@ -52,7 +57,8 @@ object FilterPathsBasedOnPredicate {
    * @throws PartitionColumnNotPresent with list of Column which were not found
    */
   @tailrec private def filterWithLeafIndicator(spark: SparkSession, paths: List[Path],
-                                               predicates: Map[Column, List[Predicate]], splitOn: String = "=",
+                                               predicates: Map[Column, List[Predicate]],
+                                               splitOn: String = "=",
                                                isLeafReached: Boolean = false): List[Path] = {
 
     // No Predicates left to filter paths on
@@ -93,8 +99,8 @@ object FilterPathsBasedOnPredicate {
     if (paths.isEmpty || predicates.isEmpty) {
       convertMapToListOfPath(paths)
     } else {
-      val operator = predicates.head
-      lazy val tail = predicates.tail
+      val operator: Predicate = predicates.head
+      val tail = predicates.tail
 
       operator match {
         case <(_) => filterPathsBasedOnPredicate(paths.filter(path => operator(path._1)), tail)

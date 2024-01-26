@@ -36,7 +36,7 @@ object ORCReader extends Reader {
 
 object ParquetReader extends Reader {
   override def read(spark: SparkSession, options: Map[String, String], paths: String*): DataFrame = spark.read
-    .options(options).orc(paths: _*)
+    .options(options).parquet(paths: _*)
 
   override def read(spark: SparkSession, paths: String*): DataFrame =
     ParquetReader.read(spark, Map.empty[String, String], paths: _*)
@@ -45,7 +45,7 @@ object ParquetReader extends Reader {
 
 object JSONReader extends Reader {
   override def read(spark: SparkSession, options: Map[String, String], paths: String*): DataFrame = spark.read
-    .options(options).orc(paths: _*)
+    .options(options).json(paths: _*)
 
   override def read(spark: SparkSession, paths: String*): DataFrame =
     JSONReader.read(spark, Map.empty[String, String], paths: _*)
@@ -54,19 +54,10 @@ object JSONReader extends Reader {
 
 object CSVReader extends Reader {
   override def read(spark: SparkSession, options: Map[String, String], paths: String*): DataFrame = spark.read
-    .options(options).orc(paths: _*)
+    .options(options).csv(paths: _*)
 
   override def read(spark: SparkSession, paths: String*): DataFrame =
     CSVReader.read(spark, Map.empty[String, String], paths: _*)
-}
-
-
-object TextReader extends Reader {
-  override def read(spark: SparkSession, options: Map[String, String], paths: String*): DataFrame = spark.read
-    .options(options).orc(paths: _*)
-
-  override def read(spark: SparkSession, paths: String*): DataFrame =
-    TextReader.read(spark, Map.empty[String, String], paths: _*)
 }
 
 
