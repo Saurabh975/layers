@@ -1,4 +1,4 @@
-package com.blakrise.layers.base
+package io.github.blakrise.layers.base
 
 import org.apache.spark.sql.{Dataset, SaveMode, SparkSession}
 import org.scalatest.BeforeAndAfterAll

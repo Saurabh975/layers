@@ -1,4 +1,4 @@
-package com.blakrise.layers.common
+package io.github.blakrise.layers.common
 
 /**
  * Trait to restrict user into providing only Int, ong, Float or Double type values

@@ -1,5 +1,5 @@
 ThisBuild / scalaVersion := "2.13.12"
-organization := "com.blackrise"
+organization := "io.github.blackrise"
 ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 lazy val layers = (project in file("."))
   .settings(
@@ -49,3 +49,5 @@ ThisBuild / developers := List(
     url   = url("https://github.com/Saurabh975")
   )
 )
+
+ThisBuild / versionScheme := Some("early-semver")

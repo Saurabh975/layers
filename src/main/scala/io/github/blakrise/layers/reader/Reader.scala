@@ -1,4 +1,4 @@
-package com.blakrise.layers.reader
+package io.github.blakrise.layers.reader
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 

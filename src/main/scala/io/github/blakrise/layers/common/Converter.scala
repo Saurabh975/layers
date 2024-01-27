@@ -1,4 +1,4 @@
-package com.blakrise.layers.common
+package io.github.blakrise.layers.common
 
 object Converter {
   object IntConverter {

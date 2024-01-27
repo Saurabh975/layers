@@ -1,4 +1,4 @@
-package com.blakrise.layers.exceptions
+package io.github.blakrise.layers.exceptions
 
 import org.apache.spark.sql.AnalysisException
 

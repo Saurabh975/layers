@@ -1,6 +1,6 @@
-package com.blakrise.layers.reader
+package io.github.blakrise.layers.reader
 
-import com.blakrise.layers.base.BaseTest
+import io.github.blakrise.layers.base.BaseTest
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.AnalysisException
 

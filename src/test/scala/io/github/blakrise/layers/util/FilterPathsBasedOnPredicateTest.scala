@@ -1,10 +1,10 @@
-package com.blakrise.layers.util
+package io.github.blakrise.layers.util
 
-import com.blakrise.layers.common.Predicate.{<, _}
-import com.blakrise.layers.base.BaseTest
-import com.blakrise.layers.common.{Column, Predicate}
-import com.blakrise.layers.exceptions.PartitionColumnNotPresent
-import com.blakrise.layers.reader.ORCReader
+import io.github.blakrise.layers.common.Predicate.{<, _}
+import io.github.blakrise.layers.base.BaseTest
+import io.github.blakrise.layers.common.{Column, Predicate}
+import io.github.blakrise.layers.exceptions.PartitionColumnNotPresent
+import io.github.blakrise.layers.reader.ORCReader
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.functions._
 

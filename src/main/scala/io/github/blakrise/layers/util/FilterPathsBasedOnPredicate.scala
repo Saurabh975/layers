@@ -1,8 +1,8 @@
-package com.blakrise.layers.util
+package io.github.blakrise.layers.util
 
-import com.blakrise.layers.common.Predicate._
-import com.blakrise.layers.common.{ColVal, Column, Predicate}
-import com.blakrise.layers.exceptions.PartitionColumnNotPresent
+import io.github.blakrise.layers.common.Predicate._
+import io.github.blakrise.layers.common.{ColVal, Column, Predicate}
+import io.github.blakrise.layers.exceptions.PartitionColumnNotPresent
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileStatus, FileSystem, Path}
 import org.apache.spark.sql.SparkSession
