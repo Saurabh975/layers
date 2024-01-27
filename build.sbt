@@ -1,5 +1,5 @@
 ThisBuild / scalaVersion := "2.13.12"
-organization := "io.github.blackrise"
+organization := "io.github.blakrise"
 ThisBuild / libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 lazy val layers = (project in file("."))
   .settings(
