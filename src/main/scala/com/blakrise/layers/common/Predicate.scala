@@ -57,21 +57,18 @@ private object Filters {
   }
 
   def in[T: AllowedAllTypes](lhs: ColVal, rhs: Set[T]): Boolean = {
-    if (rhs.isEmpty) {
-      false
-    } else {
-      rhs match {
-        case stringSet: Set[String] if rhs.head.getClass.getName equals "java.lang.String" =>
-          stringSet.contains(Converter.StringConverter(lhs))
-        case intSet: Set[Int] if rhs.head.getClass.getName equals "java.lang.Integer" =>
-          intSet.contains(Converter.IntConverter(lhs))
-        case longSet: Set[Long] if rhs.head.getClass.getName equals "java.lang.Long" =>
-          longSet.contains(Converter.LongConverter(lhs))
-        case floatSet: Set[Float] if rhs.head.getClass.getName equals "java.lang.Float" =>
-          floatSet.contains(Converter.FloatConverter(lhs))
-        case doubleSet: Set[Double] if rhs.head.getClass.getName equals "java.lang.Double" =>
-          doubleSet.contains(Converter.DoubleConverter(lhs))
-      }
+
+    rhs match {
+      case stringSet: Set[String] if rhs.head.getClass.getName equals "java.lang.String" =>
+        stringSet.contains(Converter.StringConverter(lhs))
+      case intSet: Set[Int] if rhs.head.getClass.getName equals "java.lang.Integer" =>
+        intSet.contains(Converter.IntConverter(lhs))
+      case longSet: Set[Long] if rhs.head.getClass.getName equals "java.lang.Long" =>
+        longSet.contains(Converter.LongConverter(lhs))
+      case floatSet: Set[Float] if rhs.head.getClass.getName equals "java.lang.Float" =>
+        floatSet.contains(Converter.FloatConverter(lhs))
+      case doubleSet: Set[Double] if rhs.head.getClass.getName equals "java.lang.Double" =>
+        doubleSet.contains(Converter.DoubleConverter(lhs))
     }
   }
 }

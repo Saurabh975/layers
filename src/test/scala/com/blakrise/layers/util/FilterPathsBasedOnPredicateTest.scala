@@ -1,6 +1,6 @@
 package com.blakrise.layers.util
 
-import com.blakrise.layers.common.Predicate._
+import com.blakrise.layers.common.Predicate.{<, _}
 import com.blakrise.layers.base.BaseTest
 import com.blakrise.layers.common.{Column, Predicate}
 import com.blakrise.layers.exceptions.PartitionColumnNotPresent
@@ -103,7 +103,7 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
     val predicates: Map[Column, List[Predicate]] = Map(
       Column("string_partn_col") -> List(equal("val1")),
       Column("double_partn_col") -> List(notEqual(123.5), in(234.6, 345.7)),
-      Column("float_partn_col") -> List(in(1.0, 2.1, 3.2)),
+      Column("float_partn_col") -> List(in(1.0F, 2.1F, 3.2F)),
       Column("int_partn_col") -> List(in(234)),
       Column("long_partn_col") -> List(in(2023110518240000L, 2023110718240000L))
     )
@@ -125,5 +125,19 @@ class FilterPathsBasedOnPredicateTest extends BaseTest {
     assert(dataWithBasePath.count() == dataWithFilteredPaths.count())
     assert(dataWithBasePath.columns.sorted sameElements dataWithFilteredPaths.columns.sorted)
     assert(filteredPaths.length == 24)
+  }
+
+  it should "return list of paths with < and <=, >, >= and == predicates" in {
+    val predicates: Map[Column, List[Predicate]] = Map(
+      Column("string_partn_col") -> List(equal("val1")),
+      Column("double_partn_col") -> List(notEqual(123.5), in(234.6, 345.7)),
+      Column("float_partn_col") -> List(<(3.4F), >(0.9F), equal(3.2F)),
+      Column("int_partn_col") -> List(<(235), >(121) ,<=(234), >=(122)),
+      Column("long_partn_col") -> List(equal(2023110518240000L))
+    )
+
+    val filteredPaths: List[Path] = FilterPathsBasedOnPredicate.filter(spark, List(basePath), predicates)
+
+    assert(filteredPaths.length == 8)
   }
 }
