@@ -27,7 +27,7 @@ libraryDependencies ++= sparkDependencies ++ scalaDependencies
 
 ThisBuild / description := "Some description about your project."
 ThisBuild / licenses := List(
-  "Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")
+  "Apache 2" -> new URI("http://www.apache.org/licenses/LICENSE-2.0.txt").toURL
 )
 ThisBuild / homepage := Some(url("https://github.com/blakrise/layers"))
 ThisBuild / organizationHomepage := Some(url("https://github.com/blakrise/layers"))
