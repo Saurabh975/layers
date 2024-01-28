@@ -13,7 +13,7 @@ efficiently process large volumes of data in parallel, and not focusing on how t
 
 ### So, here's Layers
 - A simple util built to help optimize the spark read.
-- This library is helpful when it comes to applying filter claues on partition columns.
+- This library is helpful when it comes to applying filter clauses on partition columns.
 
 Let's take for example you have a dataframe on which you're applying filters, 
 
@@ -68,3 +68,8 @@ As of now, it supports
 - ParquetReader
 - JSONReader
 - CSVReader
+
+### For build.sbt
+``` 
+"io.github.saurabh975" %% "layers" % "1.0.0" 
+```
