@@ -14,8 +14,8 @@ coverageMinimumBranchTotal := 95
 val sparkVersion = "3.3.3"
 
 val sparkDependencies = Seq(
-  "org.apache.spark" %% "spark-core" % sparkVersion,
-  "org.apache.spark" %% "spark-sql" % sparkVersion
+  "org.apache.spark" %% "spark-core" % sparkVersion % "provided",
+  "org.apache.spark" %% "spark-sql" % sparkVersion % "provided"
 )
 
 val scalaDependencies = Seq(
