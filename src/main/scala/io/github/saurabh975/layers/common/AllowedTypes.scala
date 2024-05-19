@@ -1,12 +1,12 @@
 package io.github.saurabh975.layers.common
 
 /**
- * Trait to restrict user into providing only Int, ong, Float or Double type values
+ * Trait to restrict user into providing only Int, Long, Float or Double type values
  */
-trait AllowedNumericTypes[T]
+sealed trait AllowedNumericTypes[T]
 
 /**
- * Object to restrict user into providing only Int, ong, Float or Double type values
+ * Object to restrict user into providing only Int, Long, Float or Double type values
  */
 object AllowedNumericTypes {
   implicit object LongAllowed extends AllowedNumericTypes[Long]
@@ -19,12 +19,12 @@ object AllowedNumericTypes {
 }
 
 /**
- * Trait to restrict user into providing only Int, ong, Float, Double or String type values
+ * Trait to restrict user into providing only Int, Long, Float, Double or String type values
  */
-trait AllowedAllTypes[T]
+sealed trait AllowedAllTypes[T]
 
 /**
- * Object to restrict user into providing only Int, ong, Float, Double or String type values
+ * Object to restrict user into providing only Int, Long, Float, Double or String type values
  */
 object AllowedAllTypes {
   implicit object LongAllowed extends AllowedAllTypes[Long]
